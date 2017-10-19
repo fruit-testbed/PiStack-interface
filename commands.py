@@ -5,8 +5,8 @@ CMD_RESPONSE_ERROR = 0x01
 # Admin commands
 CMD_GET_SW_VERSION = 0x02
 CMD_GET_HW_VERSION = 0x03
-CMD_DEBUG_LEDS_ON = 0x04
-CMD_DEBUG_LEDS_OFF = 0x05
+CMD_LEDS_ON = 0x04
+CMD_LEDS_OFF = 0x05
 CMD_SET_ID_PREFIX = 0x06
 CMD_GET_ID_PREFIX = 0x07
 CMD_GET_ID = 0x08
@@ -39,7 +39,7 @@ DATA_START_INDEX = 3 #First byte that contains data
 
 CMD_MIN_LENGTH = 3 # Minimum length = cmd, address, length,  THIS EXCLUDES CRC
 
-CMD_MASTER_ADDRESS = 0x00
+CMD_MASTER_ADDRESS = 0xFF
 
 # Command Lengths
 CMD_MIN_LENGTHS = [
@@ -71,7 +71,7 @@ RESPONSE_LENGTHS = [
     4,  #get hw version: cmd, addr, lngth, version, crc
     3,  #debug leds on: cmd, addr, lngth, crc
     3,  #debug leds off: cmd, addr, lngth, crc
-    4,  #Set prefix: cmd, addr, lngth, crc
+    3,  #Set prefix: cmd, addr, lngth, crc
     4,  #Get prefix: cmd, addr, lngth, prefix, crc
     4,  #Get Id: cmd, addr, lngth, id, crc
     5,  #Get Vin: cmd, addr, lngth, vinH, vinL, crc

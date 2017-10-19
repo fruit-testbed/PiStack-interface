@@ -9,3 +9,14 @@ class CrcFailureError(CommsError):
 
 class InvalidIdError(CommsError):
     pass
+
+class NoResponseError(CommsError):
+    pass
+
+class InvalidResponseAddressError(CommsError):
+    pass
+
+class InvalidPrefixError(CommsError):
+    pass
+
+

@@ -4,8 +4,8 @@ from string import printable
 
 from serial import Serial
 
-import commands
-from errors import InvalidCommandError, CrcFailureError, InvalidIdError
+from commands import *
+from errors import InvalidCommandError, CrcFailureError, InvalidIdError, NoResponseError, InvalidResponseAddressError,InvalidPrefixError
 from crc import calculate_crc_block as calc_crc
 
 DEFAULT_BAUD = 9600
@@ -23,11 +23,11 @@ class Comms(object):
         self.serial = Serial(self.port_name, timeout=self.timeout, baudrate=self.baudrate)
 
     def _send_cmd(self, cmd, dev_id, args=None):
-        if cmd > commands.NO_CMDS:
+        if cmd > NO_CMDS:
             raise InvalidCommandError()
-        if dev_id > commands.MAX_ID:
+        if dev_id > MAX_ID:
             raise InvalidIdError()
-        data = [cmd, dev_id, commands.CMD_MIN_LENGTHS[cmd]]
+        data = [cmd, dev_id, CMD_MIN_LENGTHS[cmd]]
         if args is not None:
             data.extend(args)
         crc = calc_crc(data)
@@ -36,6 +36,8 @@ class Comms(object):
         self.serial.write(data)
         sleep(RESPONSE_WAIT_TIME)
         resp = self.serial.readall()
+        if len(resp) == 0:
+            raise NoResponseError()
         device_output = []
         for c in resp:
             device_output.append(ord(c))
@@ -43,14 +45,46 @@ class Comms(object):
         crc = calc_crc(device_output[:-1])
         if device_output[-1] != crc:
             raise CrcFailureError()
-        return device_output[2:-2]
+        if device_output[ADDRESS_INDEX] != CMD_MASTER_ADDRESS:
+            raise InvalidResponseAddressError()
+        success = (device_output[CMD_INDEX] == CMD_RESPONSE_OK)
+        return (success, device_output[3:-1])
 
     def leds_off(self, dev_id=DEFAULT_ID):
-        self._send_cmd(commands.CMD_DEBUG_LEDS_OFF, dev_id)
+        return self._send_cmd(CMD_LEDS_OFF, dev_id)[0]
 
     def leds_on(self, dev_id=DEFAULT_ID):
-        self._send_cmd(commands.CMD_DEBUG_LEDS_ON, dev_id)
+        return self._send_cmd(CMD_LEDS_ON, dev_id)[0]
 
     def get_sw_version(self, dev_id=DEFAULT_ID):
-        return self._send_cmd(commands.CMD_GET_SW_VERSION, dev_id)[0]
+        (success, data) = self._send_cmd(CMD_GET_SW_VERSION, dev_id)
+        return (success, data[0])
 
+    def get_hw_version(self, dev_id=DEFAULT_ID):
+        (success,data) =  self._send_cmd(CMD_GET_HW_VERSION, dev_id)
+        return (success, data[0])
+
+    def set_id_prefix(self, dev_id, prefix):
+        if prefix & 0x0F:
+            raise InvalidPrefixError()
+        return self._send_cmd(CMD_SET_ID_PREFIX, dev_id, [prefix])[0]
+
+    def get_id_prefix(self, dev_id=DEFAULT_ID):
+        (success, data) = self._send_cmd(CMD_GET_ID_PREFIX, dev_id)
+        return (success, data[0])
+
+    def get_id(self, dev_id=DEFAULT_ID):
+        (success, data) = self._send_cmd(CMD_GET_ID, dev_id)
+        return (success, data[0])
+
+    def get_vin(self, dev_id = DEFAULT_ID):
+        (success, data) = self._send_cmd(CMD_GET_VIN, dev_id)
+        if success:
+            return (success, (data[0] << 8 | data[1]))
+        return (success, None)
+    
+    def get_cin(self, dev_id = DEFAULT_ID):
+        (success, data) = self._send_cmd(CMD_GET_CIN, dev_id)
+        if success:
+            return (success, (data[0] << 8 | data[1]))
+        return (success, None)
