@@ -13,6 +13,8 @@ DEFAULT_TIMEOUT = 0.5
 
 DEFAULT_ID = 0
 
+RESPONSE_WAIT_TIME = 1
+
 class Comms(object):
     def __init__(self, port_name, baud=DEFAULT_BAUD, timeout=DEFAULT_TIMEOUT):
         self.port_name = port_name
@@ -32,19 +34,23 @@ class Comms(object):
         data.append(crc)
         print data
         self.serial.write(data)
-        sleep(0.5)
+        sleep(RESPONSE_WAIT_TIME)
         resp = self.serial.readall()
-        print_output = "" #what to print out for debug purposes
         device_output = []
         for c in resp:
-            if c in printable:
-                print_output += c
-            else:
-                print_output += ("%02X " % ord(c))
-                device_output.append(ord(c))
-        print print_output
-        return device_output
+            device_output.append(ord(c))
+        print device_output
+        crc = calc_crc(device_output[:-1])
+        if device_output[-1] != crc:
+            raise CrcFailureError()
+        return device_output[2:-2]
 
     def leds_off(self, dev_id=DEFAULT_ID):
-        return self._send_cmd(commands.CMD_DEBUG_LEDS_OFF, dev_id)
+        self._send_cmd(commands.CMD_DEBUG_LEDS_OFF, dev_id)
+
+    def leds_on(self, dev_id=DEFAULT_ID):
+        self._send_cmd(commands.CMD_DEBUG_LEDS_ON, dev_id)
+
+    def get_sw_version(self, dev_id=DEFAULT_ID):
+        return self._send_cmd(commands.CMD_GET_SW_VERSION, dev_id)[0]
 
