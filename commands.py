@@ -7,27 +7,28 @@ CMD_GET_SW_VERSION = 0x02
 CMD_GET_HW_VERSION = 0x03
 CMD_LEDS_ON = 0x04
 CMD_LEDS_OFF = 0x05
-CMD_SET_ID_PREFIX = 0x06
-CMD_GET_ID_PREFIX = 0x07
-CMD_GET_ID = 0x08
+CMD_DEBUG_LED = 0x06
+CMD_SET_ID_PREFIX = 0x07
+CMD_GET_ID_PREFIX = 0x08
+CMD_GET_ID = 0x09
 
 #Status commands
-CMD_GET_VIN = 0x09
-CMD_GET_CIN = 0x0A
-CMD_GET_5V = 0x0B
-CMD_GET_PI_V = 0x0C
-CMD_GET_PI_C = 0x0D
-CMD_GET_PI_HBT = 0x0E
-CMD_GET_PI_POWERED = 0x0F
+CMD_GET_VIN = 0x0A
+CMD_GET_CIN = 0x0B
+CMD_GET_5V = 0x0C
+CMD_GET_PI_V = 0x0D
+CMD_GET_PI_C = 0x0E
+CMD_GET_PI_HBT = 0x0F
+CMD_GET_PI_POWERED = 0x10
 
 # Control commands
-CMD_PI_ON = 0x10
-CMD_PI_OFF = 0x11
-CMD_PI_FORCE_OFF = 0x12
+CMD_PI_ON = 0x11
+CMD_PI_OFF = 0x12
+CMD_PI_FORCE_OFF = 0x13
 
 
 # Command Summary
-NO_CMDS = 19
+NO_CMDS = 20
 
 #Maximum ID available on a single string of devices
 MAX_ID = 15
@@ -49,6 +50,7 @@ CMD_MIN_LENGTHS = [
     CMD_MIN_LENGTH,  #get hw version: cmd, addr, lngth
     CMD_MIN_LENGTH,  #debug leds on: cmd, addr, lngth
     CMD_MIN_LENGTH,  #debug leds off: cmd, addr, lngth
+    CMD_MIN_LENGTH + 3, #rgb led: cmr, addr, legnth, r, g, b
     CMD_MIN_LENGTH + 1,  #Set prefix: cmd, addr, lngth, prefix
     CMD_MIN_LENGTH,  #Get prefix: cmd, addr, lngth
     CMD_MIN_LENGTH,  #Get Id: cmd, addr, lngth
@@ -67,22 +69,23 @@ CMD_MIN_LENGTHS = [
 RESPONSE_LENGTHS = [
     0,  #Response so not valid as an input
     0,  #Response so not valid as an input
-    4,  #get sw version: cmd, addr, lngth, version, crc
-    4,  #get hw version: cmd, addr, lngth, version, crc
-    3,  #debug leds on: cmd, addr, lngth, crc
-    3,  #debug leds off: cmd, addr, lngth, crc
-    3,  #Set prefix: cmd, addr, lngth, crc
-    4,  #Get prefix: cmd, addr, lngth, prefix, crc
-    4,  #Get Id: cmd, addr, lngth, id, crc
-    5,  #Get Vin: cmd, addr, lngth, vinH, vinL, crc
-    5,  #Get CIN: cmd, addr, lngth, CinH, CinL, crc
-    5,  #Get 5v: cmd, addr, lngth, 5vH, 5vL, crc
-    5,  #Get pi 5v: cmd, addr, lngth, 5vH, 5vL, crc
-    5,  #Get pi current: cmd, addr, lngth, CH, CL, crc
-    4,  #Get pi  heartbeat: cmd, addr, lngth, status, crc
-    4,  #Get pi status: cmd, addr, lngth, status, crc
-    3,  #Pi  on : cmd, addr, lngth, crc
-    3,  #Pi  off : cmd, addr, lngth, crc
-    3  #Pi  force off : cmd, addr, lngth, crc
+    4,  #get sw version: cmd, addr, lngth, version,
+    4,  #get hw version: cmd, addr, lngth, version,
+    3,  #debug leds on: cmd, addr, lngth, 
+    3,  #debug leds off: cmd, addr, lngth,
+    3,  #rgb led off: cmd, addr, lngth, 
+    3,  #Set prefix: cmd, addr, lngth, 
+    4,  #Get prefix: cmd, addr, lngth, prefix,
+    4,  #Get Id: cmd, addr, lngth, id,
+    5,  #Get Vin: cmd, addr, lngth, vinH, vinL,
+    5,  #Get CIN: cmd, addr, lngth, CinH, CinL,
+    5,  #Get 5v: cmd, addr, lngth, 5vH, 5vL,
+    5,  #Get pi 5v: cmd, addr, lngth, 5vH, 5vL,
+    5,  #Get pi current: cmd, addr, lngth, CH, CL,
+    4,  #Get pi  heartbeat: cmd, addr, lngth, status,
+    4,  #Get pi status: cmd, addr, lngth, status,
+    3,  #Pi  on : cmd, addr, lngth,
+    3,  #Pi  off : cmd, addr, lngth,
+    3  #Pi  force off : cmd, addr, lngth,
 ]
 

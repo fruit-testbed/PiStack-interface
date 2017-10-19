@@ -56,6 +56,9 @@ class Comms(object):
     def leds_on(self, dev_id=DEFAULT_ID):
         return self._send_cmd(CMD_LEDS_ON, dev_id)[0]
 
+    def rgb_led(self, dev_id, red, green, blue):
+        return self._send_cmd(CMD_DEBUG_LED, dev_id, [red, green, blue])[0]
+
     def get_sw_version(self, dev_id=DEFAULT_ID):
         (success, data) = self._send_cmd(CMD_GET_SW_VERSION, dev_id)
         return (success, data[0])
