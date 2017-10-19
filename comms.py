@@ -1,11 +1,12 @@
 
 from time import sleep
-from string import printable
 
 from serial import Serial
 
 from commands import *
-from errors import InvalidCommandError, CrcFailureError, InvalidIdError, NoResponseError, InvalidResponseAddressError,InvalidPrefixError
+from errors import (
+    InvalidCommandError, CrcFailureError, InvalidIdError, NoResponseError,
+    InvalidResponseAddressError, InvalidPrefixError)
 from crc import calculate_crc_block as calc_crc
 
 DEFAULT_BAUD = 9600
@@ -61,7 +62,7 @@ class Comms(object):
         return (success, data[0])
 
     def get_hw_version(self, dev_id=DEFAULT_ID):
-        (success,data) =  self._send_cmd(CMD_GET_HW_VERSION, dev_id)
+        (success, data) = self._send_cmd(CMD_GET_HW_VERSION, dev_id)
         return (success, data[0])
 
     def set_id_prefix(self, dev_id, prefix):
@@ -77,13 +78,13 @@ class Comms(object):
         (success, data) = self._send_cmd(CMD_GET_ID, dev_id)
         return (success, data[0])
 
-    def get_vin(self, dev_id = DEFAULT_ID):
+    def get_vin(self, dev_id=DEFAULT_ID):
         (success, data) = self._send_cmd(CMD_GET_VIN, dev_id)
         if success:
             return (success, (data[0] << 8 | data[1]))
         return (success, None)
-    
-    def get_cin(self, dev_id = DEFAULT_ID):
+
+    def get_cin(self, dev_id=DEFAULT_ID):
         (success, data) = self._send_cmd(CMD_GET_CIN, dev_id)
         if success:
             return (success, (data[0] << 8 | data[1]))
