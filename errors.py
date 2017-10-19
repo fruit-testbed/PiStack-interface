@@ -7,9 +7,6 @@ class InvalidCommandError(CommsError):
 class CrcFailureError(CommsError):
     pass
 
-class InvalidIdError(CommsError):
-    pass
-
 class NoResponseError(CommsError):
     pass
 
@@ -19,4 +16,5 @@ class InvalidResponseAddressError(CommsError):
 class InvalidPrefixError(CommsError):
     pass
 
-
+class InvalidPiError(CommsError):
+    pass

@@ -5,7 +5,7 @@ from serial import Serial
 
 from commands import *
 from errors import (
-    InvalidCommandError, CrcFailureError, InvalidIdError, NoResponseError,
+    InvalidCommandError, CrcFailureError, NoResponseError,
     InvalidResponseAddressError, InvalidPrefixError)
 from crc import calculate_crc_block as calc_crc
 
@@ -26,8 +26,6 @@ class Comms(object):
     def _send_cmd(self, cmd, dev_id, args=None):
         if cmd > NO_CMDS:
             raise InvalidCommandError()
-        if dev_id > MAX_ID:
-            raise InvalidIdError()
         data = [cmd, dev_id, CMD_MIN_LENGTHS[cmd]]
         if args is not None:
             data.extend(args)
@@ -45,6 +43,7 @@ class Comms(object):
         print device_output
         crc = calc_crc(device_output[:-1])
         if device_output[-1] != crc:
+            print device_output
             raise CrcFailureError()
         if device_output[ADDRESS_INDEX] != CMD_MASTER_ADDRESS:
             raise InvalidResponseAddressError()
@@ -89,3 +88,56 @@ class Comms(object):
         if success:
             return (success, (data[0] << 8 | data[1]))
         return (success, None)
+
+
+    def get_5v(self, dev_id=DEFAULT_ID):
+        (success, data) = self._send_cmd(CMD_GET_5V, dev_id)
+        if success:
+            return (success, (data[0] << 8 | data[1]))
+        return (success, None)
+
+    def get_pi_v(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, data) = self._send_cmd(CMD_GET_PI_V, dev_id, [pi_id])
+        if success:
+            return (success, (data[0] << 8 | data[1]))
+        return (success, None)
+
+     
+    def get_pi_c(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, data) = self._send_cmd(CMD_GET_PI_C, dev_id, [pi_id])
+        if success:
+            return (success, (data[0] << 8 | data[1]))
+        return (success, None)
+
+    def get_pi_hbt(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, data) = self._send_cmd(CMD_GET_PI_HBT, dev_id, [pi_id])
+        if success:
+            return (success, data[0] == 1)
+        return (success, None)
+
+    def get_pi_powered(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, data) = self._send_cmd(CMD_GET_PI_POWERED, dev_id, [pi_id])
+        if success:
+            return (success, data[0] == 1)
+        return (success, None)
+
+    def pi_on(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        return self._send_cmd(CMD_PI_ON, dev_id, [pi_id])[0]
+
+    def pi_off(self, dev_id, pi_id, force=False):
+        validate_pi_id(pi_id)
+        if force:
+            return self._send_cmd(CMD_PI_FORCE_OFF, dev_id, [pi_id])[0]
+        else:
+            return self._send_cmd(CMD_PI_OFF, dev_id, [pi_id])[0]
+
+
+def validate_pi_id(pi_id):
+    if pi_id < 0 or pi_id > 1:
+        raise InvalidPiError()
+    return True
