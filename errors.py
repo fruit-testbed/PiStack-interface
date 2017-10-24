@@ -10,6 +10,9 @@ class CrcFailureError(CommsError):
 class NoResponseError(CommsError):
     pass
 
+class ResponseLengthTooShortError(CommsError):
+    pass
+
 class InvalidResponseAddressError(CommsError):
     pass
 
