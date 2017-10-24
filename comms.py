@@ -11,11 +11,11 @@ from errors import (
 from crc import calculate_crc_block as calc_crc
 
 DEFAULT_BAUD = 9600
-DEFAULT_TIMEOUT = 0.5
+DEFAULT_TIMEOUT = 0.1
 
 DEFAULT_ID = 0
 
-RESPONSE_WAIT_TIME = 1
+RESPONSE_WAIT_TIME = 0.3
 
 class Comms(object):
     def __init__(self, port_name, baud=DEFAULT_BAUD, timeout=DEFAULT_TIMEOUT):
