@@ -26,9 +26,19 @@ CMD_PI_ON = 0x11
 CMD_PI_OFF = 0x12
 CMD_PI_FORCE_OFF = 0x13
 
+# Timer commands
+CMD_GET_HBT_TIME = 0x14
+CMD_SET_HBT_TIME = 0x15
+CMD_GET_HBT_DELAY = 0x16
+CMD_SET_HBT_DELAY = 0x17
+CMD_GET_OFF_DELAY = 0x18
+CMD_SET_OFF_DELAY = 0x19
+CMD_GET_SIG_OFF_DELAY = 0x1A
+CMD_SET_SIG_OFF_DELAY = 0x1B
+
 
 # Command Summary
-NO_CMDS = 20
+NO_CMDS = 28
 
 #Maximum ID available on a single string of devices
 MAX_ID = 15
@@ -63,7 +73,15 @@ CMD_MIN_LENGTHS = [
     CMD_MIN_LENGTH + 1,  #Get pi status: cmd, addr, lngth, id
     CMD_MIN_LENGTH + 1,  #Pi on : cmd, addr, lngth, id
     CMD_MIN_LENGTH + 1,  #Pi off : cmd, addr, lngth, id
-    CMD_MIN_LENGTH + 1 #Pi force off : cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 1, #Pi force off : cmd, addr, lngth, id
+    CMD_MIN_LENGTH,       #Get HBT Time : cmd, addr, lngth
+    CMD_MIN_LENGTH + 1,   #Set HBT Time: cmd, add, lngth time
+    CMD_MIN_LENGTH,       #Get HBT delay: cmd, addr, length
+    CMD_MIN_LENGTH + 1,   #Set HBT delay: cmd, addr, length, time
+    CMD_MIN_LENGTH,       #Get off delay: cmd, addr, lngth
+    CMD_MIN_LENGTH + 1,   #set off delay: cmd, addr, lngth, time
+    CMD_MIN_LENGTH,       #get sig delay: cmd, addr, lngth
+    CMD_MIN_LENGTH + 1,   #set sig delay: cmd, addr, lngth, time
 ]
 
 RESPONSE_LENGTHS = [
@@ -86,6 +104,14 @@ RESPONSE_LENGTHS = [
     CMD_RESP_MIN_LENGTH + 1,  #Get pi status: cmd, addr, lngth, status,
     CMD_RESP_MIN_LENGTH,  #Pi  on : cmd, addr, lngth,
     CMD_RESP_MIN_LENGTH,  #Pi  off : cmd, addr, lngth,
-    CMD_RESP_MIN_LENGTH  #Pi  force off : cmd, addr, lngth,
+    CMD_RESP_MIN_LENGTH,  #Pi  force off : cmd, addr, lngth,
+    CMD_RESP_MIN_LENGTH + 1,       #Get HBT Time : cmd, addr, lngth, , time
+    CMD_RESP_MIN_LENGTH,   #Set HBT Time: cmd, add, lngth
+    CMD_RESP_MIN_LENGTH + 1,       #Get HBT delay: cmd, addr, length, time
+    CMD_RESP_MIN_LENGTH,   #Set HBT delay: cmd, addr, length
+    CMD_RESP_MIN_LENGTH + 1,       #Get off delay: cmd, addr, lngth, time
+    CMD_RESP_MIN_LENGTH,   #set off delay: cmd, addr, lngth
+    CMD_RESP_MIN_LENGTH + 1,       #get sig delay: cmd, addr, lngth, time
+    CMD_RESP_MIN_LENGTH   #set sig delay: cmd, addr, lngth
 ]
 
