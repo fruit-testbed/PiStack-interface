@@ -6,7 +6,7 @@ from serial import Serial
 from commands import *
 from errors import (
     InvalidCommandError, CrcFailureError, NoResponseError, InvalidPiError,
-    InvalidResponseAddressError, InvalidPrefixError, ResponseLengthTooShortError
+    InvalidResponseAddressError, InvalidPrefixError, ResponseLengthWrongError
     )
 from crc import calculate_crc_block as calc_crc
 
@@ -44,16 +44,16 @@ class Comms(object):
         print device_output
         crc = calc_crc(device_output[:-1])
         if len(device_output) < CMD_RESP_MIN_LENGTH:
-            raise ResponseLengthTooShortError()
+            raise ResponseLengthWrongError()
         if device_output[-1] != crc:
             print device_output
             raise CrcFailureError()
-        cmd = device_output[CMD_INDEX]
         if device_output[LENGTH_INDEX] != RESPONSE_LENGTHS[cmd]:
-            raise ResponseLengthTooShortError()
+            print "%d %d" %(device_output[LENGTH_INDEX],  RESPONSE_LENGTHS[cmd])
+            raise ResponseLengthWrongError()
         if device_output[ADDRESS_INDEX] != CMD_MASTER_ADDRESS:
             raise InvalidResponseAddressError()
-        success = (cmd == CMD_RESPONSE_OK)
+        success = (device_output[CMD_INDEX] == CMD_RESPONSE_OK)
         return (success, device_output[DATA_START_INDEX:-1])
 
     def leds_off(self, dev_id=DEFAULT_ID):
