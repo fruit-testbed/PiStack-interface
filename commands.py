@@ -39,7 +39,7 @@ LENGTH_INDEX = 2 # Byte that contains the length of the command
 DATA_START_INDEX = 3 #First byte that contains data
 
 CMD_MIN_LENGTH = 3 # Minimum length = cmd, address, length,  THIS EXCLUDES CRC
-
+CMD_RESP_MIN_LENGTH = 3 # Minimum length = cmd, address, length,  THIS EXCLUDES CRC
 CMD_MASTER_ADDRESS = 0xFF
 
 # Command Lengths
@@ -60,32 +60,32 @@ CMD_MIN_LENGTHS = [
     CMD_MIN_LENGTH + 1,  #Get pi 5v: cmd, addr, lngth, id
     CMD_MIN_LENGTH + 1,  #Get pi current: cmd, addr, lngth, id
     CMD_MIN_LENGTH + 1,  #Get pi  heartbeat: cmd, addr, lngth, id
-    CMD_MIN_LENGTH,  #Get pi status: cmd, addr, lngth, id
-    CMD_MIN_LENGTH,  #Pi on : cmd, addr, lngth, id
-    CMD_MIN_LENGTH,  #Pi off : cmd, addr, lngth, id
-    CMD_MIN_LENGTH  #Pi force off : cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 1,  #Get pi status: cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 1,  #Pi on : cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 1,  #Pi off : cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 1 #Pi force off : cmd, addr, lngth, id
 ]
 
 RESPONSE_LENGTHS = [
-    0,  #Response so not valid as an input
-    0,  #Response so not valid as an input
-    4,  #get sw version: cmd, addr, lngth, version,
-    4,  #get hw version: cmd, addr, lngth, version,
-    3,  #debug leds on: cmd, addr, lngth, 
-    3,  #debug leds off: cmd, addr, lngth,
-    3,  #rgb led off: cmd, addr, lngth, 
-    3,  #Set prefix: cmd, addr, lngth, 
-    4,  #Get prefix: cmd, addr, lngth, prefix,
-    4,  #Get Id: cmd, addr, lngth, id,
-    5,  #Get Vin: cmd, addr, lngth, vinH, vinL,
-    5,  #Get CIN: cmd, addr, lngth, CinH, CinL,
-    5,  #Get 5v: cmd, addr, lngth, 5vH, 5vL,
-    5,  #Get pi 5v: cmd, addr, lngth, 5vH, 5vL,
-    5,  #Get pi current: cmd, addr, lngth, CH, CL,
-    4,  #Get pi  heartbeat: cmd, addr, lngth, status,
-    4,  #Get pi status: cmd, addr, lngth, status,
-    3,  #Pi  on : cmd, addr, lngth,
-    3,  #Pi  off : cmd, addr, lngth,
-    3  #Pi  force off : cmd, addr, lngth,
+    CMD_RESP_MIN_LENGTH,  #ok: cmd, addr, length
+    CMD_RESP_MIN_LENGTH + 1,  #err: cmd, addr, lrngth, err
+    CMD_RESP_MIN_LENGTH + 1,  #get sw version: cmd, addr, lngth, version,
+    CMD_RESP_MIN_LENGTH + 1,  #get hw version: cmd, addr, lngth, version,
+    CMD_RESP_MIN_LENGTH,  #debug leds on: cmd, addr, lngth,
+    CMD_RESP_MIN_LENGTH,  #debug leds off: cmd, addr, lngth,
+    CMD_RESP_MIN_LENGTH,  #rgb led off: cmd, addr, lngth,
+    CMD_RESP_MIN_LENGTH,  #Set prefix: cmd, addr, lngth,
+    CMD_RESP_MIN_LENGTH + 1,  #Get prefix: cmd, addr, lngth, prefix,
+    CMD_RESP_MIN_LENGTH + 1,  #Get Id: cmd, addr, lngth, id,
+    CMD_RESP_MIN_LENGTH + 2,  #Get Vin: cmd, addr, lngth, vinH, vinL,
+    CMD_RESP_MIN_LENGTH + 2,  #Get CIN: cmd, addr, lngth, CinH, CinL,
+    CMD_RESP_MIN_LENGTH + 2,  #Get 5v: cmd, addr, lngth, 5vH, 5vL,
+    CMD_RESP_MIN_LENGTH + 2,  #Get pi 5v: cmd, addr, lngth, 5vH, 5vL,
+    CMD_RESP_MIN_LENGTH + 2,  #Get pi current: cmd, addr, lngth, CH, CL,
+    CMD_RESP_MIN_LENGTH + 1,  #Get pi  heartbeat: cmd, addr, lngth, status,
+    CMD_RESP_MIN_LENGTH + 1,  #Get pi status: cmd, addr, lngth, status,
+    CMD_RESP_MIN_LENGTH,  #Pi  on : cmd, addr, lngth,
+    CMD_RESP_MIN_LENGTH,  #Pi  off : cmd, addr, lngth,
+    CMD_RESP_MIN_LENGTH  #Pi  force off : cmd, addr, lngth,
 ]
 
