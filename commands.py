@@ -40,8 +40,6 @@ CMD_SET_SIG_OFF_DELAY = 0x1B
 # Command Summary
 NO_CMDS = 28
 
-#Maximum ID available on a single string of devices
-MAX_ID = 15
 # Command indexes
 CMD_INDEX = 0 # Byte that contains the command
 ADDRESS_INDEX = 1 # Byte the contains the address the CMD is sent to
@@ -74,14 +72,14 @@ CMD_MIN_LENGTHS = [
     CMD_MIN_LENGTH + 1,  #Pi on : cmd, addr, lngth, id
     CMD_MIN_LENGTH + 1,  #Pi off : cmd, addr, lngth, id
     CMD_MIN_LENGTH + 1, #Pi force off : cmd, addr, lngth, id
-    CMD_MIN_LENGTH,       #Get HBT Time : cmd, addr, lngth
-    CMD_MIN_LENGTH + 1,   #Set HBT Time: cmd, add, lngth time
-    CMD_MIN_LENGTH,       #Get HBT delay: cmd, addr, length
-    CMD_MIN_LENGTH + 1,   #Set HBT delay: cmd, addr, length, time
-    CMD_MIN_LENGTH,       #Get off delay: cmd, addr, lngth
-    CMD_MIN_LENGTH + 1,   #set off delay: cmd, addr, lngth, time
-    CMD_MIN_LENGTH,       #get sig delay: cmd, addr, lngth
-    CMD_MIN_LENGTH + 1,   #set sig delay: cmd, addr, lngth, time
+    CMD_MIN_LENGTH + 1,       #Get HBT Time : cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 2,   #Set HBT Time: cmd, add, lngth, id, time
+    CMD_MIN_LENGTH + 1,       #Get HBT delay: cmd, addr, length, id
+    CMD_MIN_LENGTH + 2,   #Set HBT delay: cmd, addr, length, id, time
+    CMD_MIN_LENGTH + 1,       #Get off delay: cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 2,   #set off delay: cmd, addr, lngth, id, time
+    CMD_MIN_LENGTH + 1,       #get sig delay: cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 2,   #set sig delay: cmd, addr, lngth, id, time
 ]
 
 RESPONSE_LENGTHS = [

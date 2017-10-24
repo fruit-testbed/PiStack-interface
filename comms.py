@@ -145,6 +145,53 @@ class Comms(object):
         else:
             return self._send_cmd(CMD_PI_OFF, dev_id, [pi_id])[0]
 
+    def get_pi_hbt_time(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, data) = self._send_cmd(CMD_GET_HBT_TIME, dev_id, [pi_id])
+        if success:
+            return (success, data[0])
+        else:
+            return (success, None)
+
+    def set_pi_hbt_time(self, dev_id, pi_id, time):
+        validate_pi_id(pi_id)
+        return self._send_cmd(CMD_SET_HBT_TIME, dev_id, [pi_id, time])[0]
+
+    def get_pi_hbt_delay(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, data) = self._send_cmd(CMD_GET_HBT_DELAY, dev_id, [pi_id])
+        if success:
+            return (success, data[0])
+        else:
+            return (success, None)
+
+    def set_pi_hbt_delay(self, dev_id, pi_id, time):
+        validate_pi_id(pi_id)
+        return self._send_cmd(CMD_SET_HBT_DELAY, dev_id, [pi_id, time])[0]
+
+    def get_pi_off_delay(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, data) = self._send_cmd(CMD_GET_OFF_DELAY, dev_id, [pi_id])
+        if success:
+            return (success, data[0])
+        else:
+            return (success, None)
+
+    def set_pi_off_delay(self, dev_id, pi_id, time):
+        validate_pi_id(pi_id)
+        return self._send_cmd(CMD_SET_OFF_DELAY, dev_id, [pi_id, time])[0]
+
+    def get_pi_sig_delay(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, data) = self._send_cmd(CMD_GET_SIG_OFF_DELAY, dev_id, [pi_id])
+        if success:
+            return (success, data[0])
+        else:
+            return (success, None)
+
+    def set_pi_sig_delay(self, dev_id, pi_id, time):
+        validate_pi_id(pi_id)
+        return self._send_cmd(CMD_SET_SIG_OFF_DELAY, dev_id, [pi_id, time])[0]
 
 def validate_pi_id(pi_id):
     if pi_id < 0 or pi_id > 1:
