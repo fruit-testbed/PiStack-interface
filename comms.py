@@ -39,8 +39,8 @@ class Comms(object):
         if len(resp) == 0:
             raise NoResponseError()
         device_output = []
-        for c in resp:
-            device_output.append(ord(c))
+        for chrtr in resp:
+            device_output.append(ord(chrtr))
         print device_output
         crc = calc_crc(device_output[:-1])
         if len(device_output) < CMD_RESP_MIN_LENGTH:
@@ -49,7 +49,7 @@ class Comms(object):
             print device_output
             raise CrcFailureError()
         if device_output[LENGTH_INDEX] != RESPONSE_LENGTHS[cmd]:
-            print "%d %d" %(device_output[LENGTH_INDEX],  RESPONSE_LENGTHS[cmd])
+            print "%d %d" %(device_output[LENGTH_INDEX], RESPONSE_LENGTHS[cmd])
             raise ResponseLengthWrongError()
         if device_output[ADDRESS_INDEX] != CMD_MASTER_ADDRESS:
             raise InvalidResponseAddressError()
@@ -112,7 +112,6 @@ class Comms(object):
             return (success, (data[0] << 8 | data[1]))
         return (success, None)
 
-     
     def get_pi_c(self, dev_id, pi_id):
         validate_pi_id(pi_id)
         (success, data) = self._send_cmd(CMD_GET_PI_C, dev_id, [pi_id])
