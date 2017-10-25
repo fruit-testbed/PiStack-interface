@@ -41,9 +41,9 @@ CMD_GET_ERROR_BUFFER = 0x1C
 CMD_CLEAR_ERROR_BUFFER = 0x1D
 CMD_GET_ERROR_COUNT = 0x1E
 CMD_CLEAR_ERROR_COUNT = 0x1F
-
+CMD_GET_ERROR_POINTER = 0x20
 # Command Summary
-NO_CMDS = 32
+NO_CMDS = 33
 
 # Command indexes
 CMD_INDEX = 0 # Byte that contains the command
@@ -88,7 +88,8 @@ CMD_MIN_LENGTHS = [
     CMD_MIN_LENGTH,       #get error buffer: cmd, addr, length
     CMD_MIN_LENGTH,       #clear error buffer: cmd, addr, length
     CMD_MIN_LENGTH,       #get error count: cmd, addr, length
-    CMD_MIN_LENGTH        #clear error count: cmd, addr, length
+    CMD_MIN_LENGTH,        #clear error count: cmd, addr, length
+    CMD_MIN_LENGTH         #get error pointer: cmd, addr, length
 ]
 
 RESPONSE_LENGTHS = [
@@ -123,7 +124,8 @@ RESPONSE_LENGTHS = [
     CMD_RESP_MIN_LENGTH + 1,  #get error buffer: cmd, addr, length, error *probably longer than this though
     CMD_RESP_MIN_LENGTH,  #clear error buffer: cmd, addr, length
     CMD_RESP_MIN_LENGTH + 2, #get error count: cmd, addr, length, cnt_h, cnt_l
-    CMD_RESP_MIN_LENGTH #clear error coutn: cmd, addr, length
+    CMD_RESP_MIN_LENGTH, #clear error coutn: cmd, addr, length
+    CMD_RESP_MIN_LENGTH + 1 #get error pointer: cmd, addr, length, pointer
 ]
 
 

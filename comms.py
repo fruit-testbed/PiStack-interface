@@ -48,7 +48,7 @@ class Comms(object):
         if device_output[-1] != crc:
             print device_output
             raise CrcFailureError()
-        if device_output[LENGTH_INDEX] != RESPONSE_LENGTHS[cmd]:
+        if device_output[LENGTH_INDEX] < RESPONSE_LENGTHS[cmd]:
             print "%d %d" %(device_output[LENGTH_INDEX], RESPONSE_LENGTHS[cmd])
             raise ResponseLengthWrongError()
         if device_output[ADDRESS_INDEX] != CMD_MASTER_ADDRESS:
@@ -191,6 +191,34 @@ class Comms(object):
     def set_pi_sig_delay(self, dev_id, pi_id, time):
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SET_SIG_OFF_DELAY, dev_id, [pi_id, time])[0]
+
+    def get_error_buffer(self, dev_id=DEFAULT_ID):
+        (success, data) = self._send_cmd(CMD_GET_ERROR_BUFFER, dev_id)
+        if success:
+            return (success, data)
+        else:
+            return (success, None)
+
+    def clear_error_buffer(self, dev_id=DEFAULT_ID):
+        return self._send_cmd(CMD_CLEAR_ERROR_BUFFER, dev_id)[0]
+
+    def get_error_count(self, dev_id=DEFAULT_ID):
+        (success, data) = self._send_cmd(CMD_GET_ERROR_COUNT, dev_id)
+        if success:
+            count = (data[0] << 8) | data[1]
+            return (success, count)
+        else:
+            return (success, None)
+
+    def reset_error_count(self, dev_id=DEFAULT_ID):
+        return self._send_cmd(CMD_CLEAR_ERROR_COUNT, dev_id)[0]
+
+    def get_error_pointer(self, dev_id=DEFAULT_ID):
+        (success, data) = self._send_cmd(CMD_GET_ERROR_POINTER, dev_id)
+        if success:
+            return (success, data[0])
+        else:
+            return (success, None)
 
 def validate_pi_id(pi_id):
     if pi_id < 0 or pi_id > 1:
