@@ -220,6 +220,10 @@ class Comms(object):
         else:
             return (success, None)
 
+    def send_sig(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        return self._send_cmd(CMD_SEND_SIG, dev_id, [pi_id])[0]
+
 def validate_pi_id(pi_id):
     if pi_id < 0 or pi_id > 1:
         raise InvalidPiError()
