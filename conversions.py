@@ -1,31 +1,60 @@
-VREF = 3.3
-ADC_MAX = 65535
+"""
+    Conversions used for the pi stack to get actual values rather than ADC counts
+    Philip Basford
+    October 2017
+"""
 
+VREF = 3.3  #The reference voltage used in the chip
+ADC_MAX = 65535 #The maximum ADC value possible
+
+#Potential divider details for main voltage in
 VIN_R1 = 100000
 VIN_R2 = 12000
 
+#Details for main current measurement
+CIN_SENSE = 0.039
+CIN_GAIN = 20
+
+#potentional divider details for 5V powersupply
 V5_R1 = 3300
 V5_R2 = 3900
 
+#potential divider details for pi PSU
 PI_R1 = 2000
 PI_R2 = 3000
 
+#details for pi current monitoring circuit
 PI_C_SENSE = 0.05
 PI_C_R_OUT = 3300
 
 def convert_vin(reading):
+    """
+        Convert ADC reading to main input voltage
+    """
     return _convert_adc(reading, VIN_R1, VIN_R2)
 
 def convert_cin(reading):
-    pass
+    """
+        Convert ADC reading to main current reading
+    """
+    return _adc_to_v(reading) / CIN_GAIN / CIN_SENSE
 
 def convert_5v(reading):
+    """
+        Convert ADC reading to 5v measurement
+    """
     return _convert_adc(reading, V5_R1, V5_R2)
 
 def convert_pi_v(reading):
+    """
+        Convert ADC reading to Pi output measurement
+    """
     return _convert_adc(reading, PI_R1, PI_R2)
 
 def convert_pi_c(reading):
+    """
+        Convert the pi output current ADC reading to value
+    """
     return (100 * _adc_to_v(reading))/(PI_C_SENSE * PI_C_R_OUT)
 
 def _convert_adc(adc, res1, res2):
