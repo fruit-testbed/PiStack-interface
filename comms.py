@@ -33,6 +33,7 @@ class Comms(object):
         crc = calc_crc(data)
         data.append(crc)
         print data
+        self.serial.reset_input_buffer()
         self.serial.write(data)
         sleep(RESPONSE_WAIT_TIME)
         resp = self.serial.readall()
