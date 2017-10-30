@@ -1,26 +1,36 @@
 #!/usr/bin/env python
-
+"""
+    Calculate the CRC of the array passed in, using the exact same lookup table as is on the device
+    Philip Basford
+"""
 import sys
 
 CRC_INITIAL = 0x00
 CRC_OR = 0x8C
 
 def calculate_crc_block(data):
-    crc = CRC_INITIAL
-    for d in data:
-        crc = calc_crc(crc,d)
+    """
+        Iterates through the array and works out the CRC
+    """
+    crc = CRC_INITIAL   #Initialise the process
+    for d in data:      #Loop through the array
+        crc = calc_crc(crc, d)
     return crc
 
 def calc_crc(crc, data):
-    crc = crc ^ int(data)
-    for i in range(8):
-        if(crc & 0x01):
+    """
+        Calculate the CRC of a single byte
+    """
+    crc = crc ^ int(data)   #XOR the data
+    for i in range(8):      #loop through the byte and process it
+        if crc & 0x01:
             crc = (crc >> 1) ^  CRC_OR
         else:
-            crc >>=1
+            crc >>= 1
     return crc
 
-CRC_TABLE= [
+#The actual CRC table
+CRC_TABLE = [
     0x0, 0x5e, 0xbc, 0xe2, 0x61, 0x3f, 0xdd, 0x83, 0xc2, 0x9c, 0x7e, 0x20, 0xa3, 0xfd, 0x1f, 0x41,
     0x9d, 0xc3, 0x21, 0x7f, 0xfc, 0xa2, 0x40, 0x1e, 0x5f, 0x1, 0xe3, 0xbd, 0x3e, 0x60, 0x82, 0xdc,
     0x23, 0x7d, 0x9f, 0xc1, 0x42, 0x1c, 0xfe, 0xa0, 0xe1, 0xbf, 0x5d, 0x3, 0x80, 0xde, 0x3c, 0x62,
@@ -39,6 +49,6 @@ CRC_TABLE= [
     0x74, 0x2a, 0xc8, 0x96, 0x15, 0x4b, 0xa9, 0xf7, 0xb6, 0xe8, 0xa, 0x54, 0xd7, 0x89, 0x6b, 0x35
 ]
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     print "CRC=0x%x" %  CRC_TABLE[CRC_INITIAL ^ int(sys.argv[1], 0)]
 
