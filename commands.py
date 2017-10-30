@@ -1,3 +1,8 @@
+"""
+    The commands understood by the Pi Stack PCB
+    Philip Basford
+    October 2017
+"""
 CMD_RESPONSE_OK = 0x00
 CMD_RESPONSE_ERROR = 0x01
 
@@ -127,7 +132,7 @@ RESPONSE_LENGTHS = [
     CMD_RESP_MIN_LENGTH,   #set off delay: cmd, addr, lngth
     CMD_RESP_MIN_LENGTH + 1,       #get sig delay: cmd, addr, lngth, time
     CMD_RESP_MIN_LENGTH,   #set sig delay: cmd, addr, lngth
-    CMD_RESP_MIN_LENGTH + 1,  #get error buffer: cmd, addr, length, error *probably longer than this though
+    CMD_RESP_MIN_LENGTH + 1, #get error buf: cmd,addr,lngth,error maybe longer
     CMD_RESP_MIN_LENGTH,  #clear error buffer: cmd, addr, length
     CMD_RESP_MIN_LENGTH + 2, #get error count: cmd, addr, length, cnt_h, cnt_l
     CMD_RESP_MIN_LENGTH, #clear error coutn: cmd, addr, length
