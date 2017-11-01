@@ -1,4 +1,8 @@
-
+"""
+    Interface to the serial interface used on the Pi Stack
+    Philip Basford
+    October 2017
+"""
 from time import sleep
 
 from serial import Serial
@@ -18,6 +22,9 @@ DEFAULT_ID = 0
 RESPONSE_WAIT_TIME = 0.3
 
 class Comms(object):
+    """
+        Handle all comms over the serial link
+    """
     def __init__(self, port_name, baud=DEFAULT_BAUD, timeout=DEFAULT_TIMEOUT):
         self.port_name = port_name
         self.baudrate = baud
@@ -25,13 +32,17 @@ class Comms(object):
         self.serial = Serial(self.port_name, timeout=self.timeout, baudrate=self.baudrate)
 
     def _send_cmd(self, cmd, dev_id, args=None):
-        if cmd > NO_CMDS:
+        """
+            Handles the actual process of sending a command and recieving a response.
+            All methods that commnicate with the stack make use of this
+        """
+        if cmd > NO_CMDS:   #Command is not known about
             raise InvalidCommandError()
-        data = [cmd, dev_id, CMD_MIN_LENGTHS[cmd]]
-        if args is not None:
+        data = [cmd, dev_id, CMD_MIN_LENGTHS[cmd]] #Convert the inputsinto an array to send
+        if args is not None:    #if there are arugments to the call add them onto the existing array
             data.extend(args)
-        crc = calc_crc(data)
-        data.append(crc)
+        crc = calc_crc(data)    #work out the crc
+        data.append(crc)        #and append it 
         print data
         self.serial.reset_input_buffer()
         self.serial.write(data)
