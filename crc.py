@@ -50,5 +50,5 @@ CRC_TABLE = [
 ]
 
 if __name__ == "__main__":
-    print "CRC=0x%x" %  CRC_TABLE[CRC_INITIAL ^ int(sys.argv[1], 0)]
+    print("CRC=0x%x" %  CRC_TABLE[CRC_INITIAL ^ int(sys.argv[1], 0)])
 

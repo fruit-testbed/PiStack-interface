@@ -42,8 +42,8 @@ class Comms(object):
         if args is not None:    #if there are arugments to the call add them onto the existing array
             data.extend(args)
         crc = calc_crc(data)    #work out the crc
-        data.append(crc)        #and append it 
-        print data
+        data.append(crc)        #and append it
+        print(data)
         self.serial.reset_input_buffer()
         self.serial.write(data)
         sleep(RESPONSE_WAIT_TIME)
@@ -53,15 +53,15 @@ class Comms(object):
         device_output = []
         for chrtr in resp:
             device_output.append(ord(chrtr))
-        print device_output
+        print(device_output)
         crc = calc_crc(device_output[:-1])
         if len(device_output) < CMD_RESP_MIN_LENGTH:
             raise ResponseLengthWrongError()
         if device_output[-1] != crc:
-            print device_output
+            print(device_output)
             raise CrcFailureError()
         if device_output[LENGTH_INDEX] < RESPONSE_LENGTHS[cmd]:
-            print "%d %d" %(device_output[LENGTH_INDEX], RESPONSE_LENGTHS[cmd])
+            print("%d %d" %(device_output[LENGTH_INDEX], RESPONSE_LENGTHS[cmd]))
             raise ResponseLengthWrongError()
         if device_output[ADDRESS_INDEX] != CMD_MASTER_ADDRESS:
             raise InvalidResponseAddressError()
