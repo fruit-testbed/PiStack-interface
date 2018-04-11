@@ -8,6 +8,7 @@ from time import sleep
 from serial import Serial
 
 from commands import *
+
 from errors import (
     InvalidCommandError, CrcFailureError, NoResponseError, InvalidPiError,
     InvalidResponseAddressError, InvalidPrefixError, ResponseLengthWrongError
@@ -52,7 +53,7 @@ class Comms(object):
             raise NoResponseError()
         device_output = []
         for chrtr in resp:
-            device_output.append(ord(chrtr))
+            device_output.append(chrtr)
         print(device_output)
         crc = calc_crc(device_output[:-1])
         if len(device_output) < CMD_RESP_MIN_LENGTH:
