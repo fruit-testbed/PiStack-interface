@@ -4,12 +4,15 @@ Originally written for Python 2.7, now changed to be Python3.
 
 ## Requirements
 * python3-serial ```sudo apt install python3-serial```
+  alternatively, install using pip: ```python3 -m pip install pyserial```
 ## Usage
 ```
 import comms, conversions
 C = comms.Comms("/dev/ttyS15", 9600)
 C.get_hw_version(4)
 ```
+
+You can find the appropriate /dev interface with a dmesg command after you have plugged in your USB-to-RS232 converter. It may be /dev/ttyUSB0 or similar.
 
 All commands take the board ID in as the first argument.  If it is not specified it defaults to Pi Stack ID 0.
 
