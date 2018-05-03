@@ -242,6 +242,19 @@ class Comms(object):
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SEND_SIG, dev_id, [pi_id])[0]
 
+    def set_pi_on_startup(self, dev_id, pi_id, status=True):
+        validate_pi_id(pi_id)
+        return self._send_cmd(CMD_SET_PI_ON_STARTUP, dev_id, [pi_id, int(status)])[0]
+
+    def get_pi_on_startup(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, value) = self._send_cmd(CMD_GET_PI_ON_STARTUP, dev_id, [pi_id])
+        print(value)
+        if success:
+            return (success, bool(value[0]))
+        else:
+            return (success, None)
+
 def validate_pi_id(pi_id):
     if pi_id < 0 or pi_id > 1:
         raise InvalidPiError()

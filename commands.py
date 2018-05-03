@@ -52,8 +52,12 @@ CMD_GET_ERROR_POINTER = 0x20
 CMD_SEND_SIG = 0x21
 
 
+# Config commands 
+CMD_GET_PI_ON_STARTUP = 0x22
+CMD_SET_PI_ON_STARTUP = 0x23
+
 # Command Summary
-NO_CMDS = 34
+NO_CMDS = 36
 
 # Command indexes
 CMD_INDEX = 0 # Byte that contains the command
@@ -101,6 +105,8 @@ CMD_MIN_LENGTHS = [
     CMD_MIN_LENGTH,        #clear error count: cmd, addr, length
     CMD_MIN_LENGTH,         #get error pointer: cmd, addr, lengtha
     CMD_MIN_LENGTH + 1,     #Send signal: cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 1,       #CMD_GET_PI_ON_STARTUP: cmd, addr, lngth, id
+    CMD_MIN_LENGTH + 2,       #CMD_SET_PI_ON_STARTUP: cmd, addr, lngth, id, value
 ]
 
 RESPONSE_LENGTHS = [
@@ -137,7 +143,9 @@ RESPONSE_LENGTHS = [
     CMD_RESP_MIN_LENGTH + 2, #get error count: cmd, addr, length, cnt_h, cnt_l
     CMD_RESP_MIN_LENGTH, #clear error coutn: cmd, addr, length
     CMD_RESP_MIN_LENGTH + 1, #get error pointer: cmd, addr, length, pointer
-    CMD_RESP_MIN_LENGTH #send signal: cmd, addr, length
+    CMD_RESP_MIN_LENGTH, #send signal: cmd, addr, length
+    CMD_RESP_MIN_LENGTH +1 ,  #CMD_GET_PI_ON_STARTUP: cmd, addr, lngth, status
+    CMD_RESP_MIN_LENGTH, #CMD_SET_PI_ON_STARTUP: cmd, addr, lngth
 ]
 
 
