@@ -267,6 +267,46 @@ class Comms(object):
         else:
             return (success, None)
 
+    def get_power(self, dev_id=0):
+        (success, values) = self._send_cmd(CMD_GET_POWER, dev_id)
+        if success:
+            return (success, ((values[0] << 24) | values[1] << 16 | values[2] << 8) | values[3])
+        else:
+            return (success, None)
+
+    def get_5v_power(self, dev_id=0):
+        (success, values) = self._send_cmd(CMD_GET_5V_POWER, dev_id)
+        if success:
+            return (success, ((values[0] << 24) | values[1] << 16 | values[2] << 8) | values[3])
+        else:
+            return (success, None)
+
+    def get_pi_power(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, values) = self._send_cmd(CMD_GET_PI_POWER, dev_id, [pi_id])
+        if success:
+            return (success, ((values[0] << 24) | values[1] << 16 | values[2] << 8) | values[3])
+        else:
+            return (success, None)
+
+    def search(self, start=0, stop=256):
+        """
+            Search the specified address space
+            start - start index (included)
+            stop = stop index (excluded)
+            returns (count, [ids])
+        """
+        count = 0
+        ids = []
+        for  i in range(start, stop):
+            try:
+                self.get_hw_version(i)
+                count += 1
+                ids.append(i)
+            except:
+                pass
+        return (count, ids)
+
 
 def validate_pi_id(pi_id):
     if pi_id < 0 or pi_id > 1:

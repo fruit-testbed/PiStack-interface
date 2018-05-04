@@ -27,6 +27,9 @@ PI_R2 = 3000
 PI_C_SENSE = 0.05
 PI_C_R_OUT = 3300
 
+#scale factor for ZXCT1009
+ZXCT1009_SF = 100
+
 def convert_vin(reading):
     """
         Convert ADC reading to main input voltage
@@ -55,7 +58,23 @@ def convert_pi_c(reading):
     """
         Convert the pi output current ADC reading to value
     """
-    return (100 * _adc_to_v(reading))/(PI_C_SENSE * PI_C_R_OUT)
+    return (ZXCT1009_SF * _adc_to_v(reading))/(PI_C_SENSE * PI_C_R_OUT)
+
+def convert_power(reading):
+    """
+        Convert the power reading from the main vin side
+    """
+    return (
+        reading * pow(VREF, 2) / pow(ADC_MAX, 2) *
+        (VIN_R1 + VIN_R2) / VIN_R2 / CIN_SENSE / CIN_GAIN)
+
+def convert_5v_power(reading):
+    """
+        Convert the power reading from the 5v/pi side
+    """
+    return (
+        reading * pow(VREF, 2) / pow(ADC_MAX, 2) *
+        (V5_R2 + V5_R1) / V5_R2 * ZXCT1009_SF / (PI_C_SENSE * PI_C_R_OUT))
 
 def _convert_adc(adc, res1, res2):
     """
