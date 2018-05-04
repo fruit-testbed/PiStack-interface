@@ -255,6 +255,19 @@ class Comms(object):
         else:
             return (success, None)
 
+    def set_pi_sig_width(self, dev_id, pi_id, width):
+        validate_pi_id(pi_id)
+        return self._send_cmd(CMD_SET_SIG_WIDTH, dev_id, [pi_id, width])[0]
+
+    def get_pi_sig_width(self, dev_id, pi_id):
+        validate_pi_id(pi_id)
+        (success, value) = self._send_cmd(CMD_GET_SIG_WIDTH, dev_id, [pi_id])
+        if success:
+            return (success, value[0])
+        else:
+            return (success, None)
+
+
 def validate_pi_id(pi_id):
     if pi_id < 0 or pi_id > 1:
         raise InvalidPiError()
