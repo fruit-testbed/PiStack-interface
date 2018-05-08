@@ -63,8 +63,11 @@ CMD_GET_POWER = 0x26
 CMD_GET_5V_POWER = 0x27
 CMD_GET_PI_POWER = 0x28
 
+# Boot count
+CMD_GET_BOOT_COUNT = 0x29
+
 # Command Summary
-NO_CMDS = 41
+NO_CMDS = 42
 
 # Command indexes
 CMD_INDEX = 0 # Byte that contains the command
@@ -119,6 +122,7 @@ CMD_MIN_LENGTHS = [
     CMD_MIN_LENGTH,         #CMD_GET_POWER: cmd, addr, length
     CMD_MIN_LENGTH,        #CMD_GET_5V_POWER: cmd, addr, length
     CMD_MIN_LENGTH + 1,       #CMD_GET_PI_POWER: cmd, addr, lngth, id
+    CMD_MIN_LENGTH,           #CMD_GET_BOOT_COUNT, cmd, addr, lngth
 ]
 
 RESPONSE_LENGTHS = [
@@ -163,6 +167,7 @@ RESPONSE_LENGTHS = [
     CMD_RESP_MIN_LENGTH + 4, #CMD_GET_POWER: cmd, addr, lngth, value4, value3, value2, value1
     CMD_RESP_MIN_LENGTH + 4, #CMD_GET_5V_POWER: cmd, addr, lngth, value4, value3, value2, value1
     CMD_RESP_MIN_LENGTH + 4, #CMD_GET_PI_POWER: cmd, addr, lngth, value4, value3, value2, value1
+    CMD_RESP_MIN_LENGTH +2, #CMD_GET_BOOT_COUNT: cmd, addr, lngth, value2, value1
 ]
 
 

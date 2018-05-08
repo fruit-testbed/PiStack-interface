@@ -307,6 +307,12 @@ class Comms(object):
                 pass
         return (count, ids)
 
+    def get_boot_count(self, dev_id):
+        (success, values) = self._send_cmd(CMD_GET_BOOT_COUNT, dev_id)
+        if success:
+            return (success, (values[0] << 8 | values[1]))
+        else:
+            return (success, None)
 
 def validate_pi_id(pi_id):
     if pi_id < 0 or pi_id > 1:
