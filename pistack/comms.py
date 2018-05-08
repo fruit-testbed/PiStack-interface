@@ -7,13 +7,13 @@ from time import sleep
 
 from serial import Serial
 
-from commands import *
+from pistack.commands import *
 
-from errors import (
+from pistack.errors import (
     InvalidCommandError, CrcFailureError, NoResponseError, InvalidPiError,
     InvalidResponseAddressError, InvalidPrefixError, ResponseLengthWrongError
     )
-from crc import calculate_crc_block as calc_crc
+from pistack.crc import calculate_crc_block as calc_crc
 
 DEFAULT_BAUD = 9600
 DEFAULT_TIMEOUT = 0.1

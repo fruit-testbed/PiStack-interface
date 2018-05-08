@@ -4,7 +4,7 @@
     08/05/2018
 """
 
-from errors import InvalidErrorCode
+from pistack.errors import InvalidErrorCode
 # Sucess statuses
 _SUCCESS = 0x00
 _ERR_CMD_NO_ID_MATCH = 0x02
