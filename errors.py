@@ -21,3 +21,6 @@ class InvalidPrefixError(CommsError):
 
 class InvalidPiError(CommsError):
     pass
+
+class InvalidErrorCode(Exception):
+    pass
