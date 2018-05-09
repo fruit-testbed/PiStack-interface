@@ -28,6 +28,6 @@ setup(
     keywords='pistack',
     platforms='any',
     packages=find_packages(exclude=['contrib', 'docs', 'test*']),
-    install_requires=[],
+    install_requires=['pyserial'],
     python_requires='>=3.3, <4',
 )
