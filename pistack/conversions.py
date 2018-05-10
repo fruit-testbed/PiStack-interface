@@ -40,7 +40,7 @@ def convert_cin(reading):
     """
         Convert ADC reading to main current reading
     """
-    return _adc_to_v(reading) / CIN_GAIN / CIN_SENSE
+    return round(_adc_to_v(reading) / CIN_GAIN / CIN_SENSE,2 )
 
 def convert_5v(reading):
     """
@@ -58,30 +58,30 @@ def convert_pi_c(reading):
     """
         Convert the pi output current ADC reading to value
     """
-    return (ZXCT1009_SF * _adc_to_v(reading))/(PI_C_SENSE * PI_C_R_OUT)
+    return round((ZXCT1009_SF * _adc_to_v(reading))/(PI_C_SENSE * PI_C_R_OUT),2)
 
 def convert_power(reading):
     """
         Convert the power reading from the main vin side
     """
-    return (
+    return round(
         reading * pow(VREF, 2) / pow(ADC_MAX, 2) *
-        (VIN_R1 + VIN_R2) / VIN_R2 / CIN_SENSE / CIN_GAIN)
+        (VIN_R1 + VIN_R2) / VIN_R2 / CIN_SENSE / CIN_GAIN, 2)
 
 def convert_5v_power(reading):
     """
         Convert the power reading from the 5v/pi side
     """
-    return (
+    return round(
         reading * pow(VREF, 2) / pow(ADC_MAX, 2) *
-        (V5_R2 + V5_R1) / V5_R2 * ZXCT1009_SF / (PI_C_SENSE * PI_C_R_OUT))
+        (V5_R2 + V5_R1) / V5_R2 * ZXCT1009_SF / (PI_C_SENSE * PI_C_R_OUT), 2)
 
 def _convert_adc(adc, res1, res2):
     """
         R1 = the upper of the pair
         R2 = the lower of the pair
     """
-    return _adc_to_v(adc) * (res1 + res2) / res2
+    return round(_adc_to_v(adc) * (res1 + res2) / res2,2)
 
 def _adc_to_v(adc):
     """
