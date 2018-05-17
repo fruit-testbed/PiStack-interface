@@ -27,10 +27,10 @@ class Comms(object):
         Handle all comms over the serial link
     """
     def __init__(self, port_name, baud=DEFAULT_BAUD, timeout=DEFAULT_TIMEOUT):
-        self.port_name = port_name
-        self.baudrate = baud
-        self.timeout = timeout
-        self.serial = Serial(self.port_name, timeout=self.timeout, baudrate=self.baudrate)
+        self._port_name = port_name
+        self._baudrate = baud
+        self._timeout = timeout
+        self._serial = Serial(self._port_name, timeout=self._timeout, baudrate=self._baudrate)
 
     def _send_cmd(self, cmd, dev_id, args=None):
         """
@@ -45,10 +45,10 @@ class Comms(object):
         crc = calc_crc(data)    #work out the crc
         data.append(crc)        #and append it
         print(data)
-        self.serial.reset_input_buffer()
-        self.serial.write(data)
+        self._serial.reset_input_buffer()
+        self._serial.write(data)
         sleep(RESPONSE_WAIT_TIME)
-        resp = self.serial.readall()
+        resp = self._serial.readall()
         if len(resp) == 0:
             raise NoResponseError()
         device_output = []
