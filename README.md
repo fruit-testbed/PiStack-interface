@@ -7,8 +7,8 @@ Originally written for Python 2.7, now changed to be Python3.
   alternatively, install using pip: ```python3 -m pip install pyserial```
 ## Usage
 ```
-import comms, conversions
-C = comms.Comms("/dev/ttyS15", 9600)
+import pistack.comms, pistack.conversions
+C = pistack.comms.Comms("/dev/ttyS15", 9600)
 C.get_hw_version(4)
 ```
 
@@ -22,13 +22,13 @@ The functions return a tuple of ```(success, data)``` the data sent over the ser
 The data is sent as ints over the RS485 connection so there is the conversions module to convert this to actual values.  
 
 ```
- conversions.convert_vin(C.get_vin(4)[1])
+ pistack.conversions.convert_vin(C.get_vin(4)[1])
 ```
 Shows the input voltage measured by Pi Stack 4.  
 
 Notes:
 * The conversion functions are based on the resistor networks so there is some deviation between boards due to the tolerance of the components.
-* When using the V3 hardware use ```conversions.convert_5v``` for the pi voltage measurements as well.  ```conversions.convert_pi_v``` is for the version 2 hardware which has slighty different resistor networks.
+* When using the V3 hardware use ```pistack.conversions.convert_5v``` for the pi voltage measurements as well.  ```pistack.conversions.convert_pi_v``` is for the version 2 hardware which has slighty different resistor networks.
 
 ### Pi Power Control
 ```pi_on(0, 0)``` turns the pi on instantly.
