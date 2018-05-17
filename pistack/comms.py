@@ -105,7 +105,6 @@ class Comms(object):
         """
             The ID conists to 2 parts, the lower 4 bits are set using the dip switches.
             The higher 4 bits are set using this command.
-            WARNING: This is not yet persistent in the PiStack board
         """
         if prefix & 0x0F:
             raise InvalidPrefixError()
