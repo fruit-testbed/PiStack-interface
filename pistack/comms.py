@@ -27,6 +27,12 @@ class Comms(object):
         Handle all comms over the serial link
     """
     def __init__(self, port_name, baud=_DEFAULT_BAUD, timeout=_DEFAULT_TIMEOUT):
+        """
+            Create the interface for the Pi Stack boards
+            :param port_name: The serial port to use
+            :param baud: OPTIONAL: The baud rate to use
+            :param timeout: OPTIONAL: The timeout to use
+        """
         self._port_name = port_name
         self._baudrate = baud
         self._timeout = timeout
