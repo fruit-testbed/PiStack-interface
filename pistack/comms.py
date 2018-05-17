@@ -15,18 +15,18 @@ from pistack.errors import (
     )
 from pistack.crc import calculate_crc_block as calc_crc
 
-DEFAULT_BAUD = 9600
-DEFAULT_TIMEOUT = 0.1
+_DEFAULT_BAUD = 9600
+_DEFAULT_TIMEOUT = 0.1
 
-DEFAULT_ID = 0
+_DEFAULT_ID = 0
 
-RESPONSE_WAIT_TIME = 0.3
+_RESPONSE_WAIT_TIME = 0.3
 
 class Comms(object):
     """
         Handle all comms over the serial link
     """
-    def __init__(self, port_name, baud=DEFAULT_BAUD, timeout=DEFAULT_TIMEOUT):
+    def __init__(self, port_name, baud=_DEFAULT_BAUD, timeout=_DEFAULT_TIMEOUT):
         self._port_name = port_name
         self._baudrate = baud
         self._timeout = timeout
@@ -47,7 +47,7 @@ class Comms(object):
         print(data)
         self._serial.reset_input_buffer()
         self._serial.write(data)
-        sleep(RESPONSE_WAIT_TIME)
+        sleep(_RESPONSE_WAIT_TIME)
         resp = self._serial.readall()
         if len(resp) == 0:
             raise NoResponseError()
@@ -69,13 +69,13 @@ class Comms(object):
         success = (device_output[CMD_INDEX] == CMD_RESPONSE_OK)
         return (success, device_output[DATA_START_INDEX:-1])
 
-    def leds_off(self, dev_id=DEFAULT_ID):
+    def leds_off(self, dev_id=_DEFAULT_ID):
         """
             Turn the LED software enable off
         """
         return self._send_cmd(CMD_LEDS_OFF, dev_id)[0]
 
-    def leds_on(self, dev_id=DEFAULT_ID):
+    def leds_on(self, dev_id=_DEFAULT_ID):
         """
             Turn the LED software enable on
         """
@@ -87,14 +87,14 @@ class Comms(object):
         """
         return self._send_cmd(CMD_DEBUG_LED, dev_id, [red, green, blue])[0]
 
-    def get_sw_version(self, dev_id=DEFAULT_ID):
+    def get_sw_version(self, dev_id=_DEFAULT_ID):
         """
             Get the version of software running on the Pi Stack
         """
         (success, data) = self._send_cmd(CMD_GET_SW_VERSION, dev_id)
         return (success, data[0])
 
-    def get_hw_version(self, dev_id=DEFAULT_ID):
+    def get_hw_version(self, dev_id=_DEFAULT_ID):
         """
             Get the hardware version of the Pi Stack Board
         """
@@ -111,21 +111,21 @@ class Comms(object):
             raise InvalidPrefixError()
         return self._send_cmd(CMD_SET_ID_PREFIX, dev_id, [prefix])[0]
 
-    def get_id_prefix(self, dev_id=DEFAULT_ID):
+    def get_id_prefix(self, dev_id=_DEFAULT_ID):
         """
             Get the ID prefix being used by the board
         """
         (success, data) = self._send_cmd(CMD_GET_ID_PREFIX, dev_id)
         return (success, data[0])
 
-    def get_id(self, dev_id=DEFAULT_ID):
+    def get_id(self, dev_id=_DEFAULT_ID):
         """
             Get the full 8 bit ID
         """
         (success, data) = self._send_cmd(CMD_GET_ID, dev_id)
         return (success, data[0])
 
-    def get_vin(self, dev_id=DEFAULT_ID):
+    def get_vin(self, dev_id=_DEFAULT_ID):
         """
             Read the voltage being put into the board
         """
@@ -134,7 +134,7 @@ class Comms(object):
             return (success, (data[0] << 8 | data[1]))
         return (success, None)
 
-    def get_cin(self, dev_id=DEFAULT_ID):
+    def get_cin(self, dev_id=_DEFAULT_ID):
         """
             Read the current being drawn by the board
         """
@@ -144,7 +144,7 @@ class Comms(object):
         return (success, None)
 
 
-    def get_5v(self, dev_id=DEFAULT_ID):
+    def get_5v(self, dev_id=_DEFAULT_ID):
         """
             Read the output voltage of the 5 volt regulator
         """
@@ -283,7 +283,7 @@ class Comms(object):
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SET_SIG_OFF_DELAY, dev_id, [pi_id, time])[0]
 
-    def get_error_buffer(self, dev_id=DEFAULT_ID):
+    def get_error_buffer(self, dev_id=_DEFAULT_ID):
         """
             Get the complete error buffer from the Pi Stack
         """
@@ -293,13 +293,13 @@ class Comms(object):
         else:
             return (success, None)
 
-    def clear_error_buffer(self, dev_id=DEFAULT_ID):
+    def clear_error_buffer(self, dev_id=_DEFAULT_ID):
         """
             Reset the error buffer
         """
         return self._send_cmd(CMD_CLEAR_ERROR_BUFFER, dev_id)[0]
 
-    def get_error_count(self, dev_id=DEFAULT_ID):
+    def get_error_count(self, dev_id=_DEFAULT_ID):
         """
             Get the number of errors recorded since last reset
         """
@@ -310,13 +310,13 @@ class Comms(object):
         else:
             return (success, None)
 
-    def reset_error_count(self, dev_id=DEFAULT_ID):
+    def reset_error_count(self, dev_id=_DEFAULT_ID):
         """
             Reset both the error count and boot count
         """
         return self._send_cmd(CMD_CLEAR_ERROR_COUNT, dev_id)[0]
 
-    def get_error_pointer(self, dev_id=DEFAULT_ID):
+    def get_error_pointer(self, dev_id=_DEFAULT_ID):
         """
             Get the current error pointer - can be used to identify the most recent
             error when the buffer is full
