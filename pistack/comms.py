@@ -70,19 +70,34 @@ class Comms(object):
         return (success, device_output[DATA_START_INDEX:-1])
 
     def leds_off(self, dev_id=DEFAULT_ID):
+        """
+            Turn the LED software enable off
+        """
         return self._send_cmd(CMD_LEDS_OFF, dev_id)[0]
 
     def leds_on(self, dev_id=DEFAULT_ID):
+        """
+            Turn the LED software enable on
+        """
         return self._send_cmd(CMD_LEDS_ON, dev_id)[0]
 
     def rgb_led(self, dev_id, red, green, blue):
+        """
+            Set the colour of the RGB debug LED
+        """
         return self._send_cmd(CMD_DEBUG_LED, dev_id, [red, green, blue])[0]
 
     def get_sw_version(self, dev_id=DEFAULT_ID):
+        """
+            Get the version of software running on the Pi Stack
+        """
         (success, data) = self._send_cmd(CMD_GET_SW_VERSION, dev_id)
         return (success, data[0])
 
     def get_hw_version(self, dev_id=DEFAULT_ID):
+        """
+            Get the hardware version of the Pi Stack Board
+        """
         (success, data) = self._send_cmd(CMD_GET_HW_VERSION, dev_id)
         return (success, data[0])
 
@@ -97,20 +112,32 @@ class Comms(object):
         return self._send_cmd(CMD_SET_ID_PREFIX, dev_id, [prefix])[0]
 
     def get_id_prefix(self, dev_id=DEFAULT_ID):
+        """
+            Get the ID prefix being used by the board
+        """
         (success, data) = self._send_cmd(CMD_GET_ID_PREFIX, dev_id)
         return (success, data[0])
 
     def get_id(self, dev_id=DEFAULT_ID):
+        """
+            Get the full 8 bit ID
+        """
         (success, data) = self._send_cmd(CMD_GET_ID, dev_id)
         return (success, data[0])
 
     def get_vin(self, dev_id=DEFAULT_ID):
+        """
+            Read the voltage being put into the board
+        """
         (success, data) = self._send_cmd(CMD_GET_VIN, dev_id)
         if success:
             return (success, (data[0] << 8 | data[1]))
         return (success, None)
 
     def get_cin(self, dev_id=DEFAULT_ID):
+        """
+            Read the current being drawn by the board
+        """
         (success, data) = self._send_cmd(CMD_GET_CIN, dev_id)
         if success:
             return (success, (data[0] << 8 | data[1]))
@@ -118,12 +145,18 @@ class Comms(object):
 
 
     def get_5v(self, dev_id=DEFAULT_ID):
+        """
+            Read the output voltage of the 5 volt regulator
+        """
         (success, data) = self._send_cmd(CMD_GET_5V, dev_id)
         if success:
             return (success, (data[0] << 8 | data[1]))
         return (success, None)
 
     def get_pi_v(self, dev_id, pi_id):
+        """
+            Read the voltage being sent to a Pi
+        """
         validate_pi_id(pi_id)
         (success, data) = self._send_cmd(CMD_GET_PI_V, dev_id, [pi_id])
         if success:
@@ -131,6 +164,9 @@ class Comms(object):
         return (success, None)
 
     def get_pi_c(self, dev_id, pi_id):
+        """
+            Read the current being used by a Pi
+        """
         validate_pi_id(pi_id)
         (success, data) = self._send_cmd(CMD_GET_PI_C, dev_id, [pi_id])
         if success:
@@ -138,6 +174,9 @@ class Comms(object):
         return (success, None)
 
     def get_pi_hbt(self, dev_id, pi_id):
+        """
+            Read the heartbeat status for a Pi
+        """
         validate_pi_id(pi_id)
         (success, data) = self._send_cmd(CMD_GET_PI_HBT, dev_id, [pi_id])
         if success:
@@ -145,6 +184,9 @@ class Comms(object):
         return (success, None)
 
     def get_pi_powered(self, dev_id, pi_id):
+        """
+            Check to see if the specified Pi is powered
+        """
         validate_pi_id(pi_id)
         (success, data) = self._send_cmd(CMD_GET_PI_POWERED, dev_id, [pi_id])
         if success:
@@ -152,10 +194,17 @@ class Comms(object):
         return (success, None)
 
     def pi_on(self, dev_id, pi_id):
+        """
+            Turn the specified pi on
+        """
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_PI_ON, dev_id, [pi_id])[0]
 
     def pi_off(self, dev_id, pi_id, force=False):
+        """
+            Turn the specified pi off.
+            If force is specified do not give it time for a clean shutdown
+        """
         validate_pi_id(pi_id)
         if force:
             return self._send_cmd(CMD_PI_FORCE_OFF, dev_id, [pi_id])[0]
@@ -163,6 +212,9 @@ class Comms(object):
             return self._send_cmd(CMD_PI_OFF, dev_id, [pi_id])[0]
 
     def get_pi_hbt_time(self, dev_id, pi_id):
+        """
+            Get the time to wait between heartbeats before it fails
+        """
         validate_pi_id(pi_id)
         (success, data) = self._send_cmd(CMD_GET_HBT_TIME, dev_id, [pi_id])
         if success:
@@ -171,10 +223,16 @@ class Comms(object):
             return (success, None)
 
     def set_pi_hbt_time(self, dev_id, pi_id, time):
+        """
+            Set the time to wait between heartbeats before it is reported as a failure
+        """
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SET_HBT_TIME, dev_id, [pi_id, time])[0]
 
     def get_pi_hbt_delay(self, dev_id, pi_id):
+        """
+            Get how long it will wait for the Pi to boot and start sending heartbeats
+        """
         validate_pi_id(pi_id)
         (success, data) = self._send_cmd(CMD_GET_HBT_DELAY, dev_id, [pi_id])
         if success:
@@ -183,10 +241,16 @@ class Comms(object):
             return (success, None)
 
     def set_pi_hbt_delay(self, dev_id, pi_id, time):
+        """
+            Set how long it will wait for the Pi to boot and start sending heartbeats
+        """
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SET_HBT_DELAY, dev_id, [pi_id, time])[0]
 
     def get_pi_off_delay(self, dev_id, pi_id):
+        """
+            Get how long to wait between signalling a shutdown and powering off the pi
+        """
         validate_pi_id(pi_id)
         (success, data) = self._send_cmd(CMD_GET_OFF_DELAY, dev_id, [pi_id])
         if success:
@@ -195,10 +259,16 @@ class Comms(object):
             return (success, None)
 
     def set_pi_off_delay(self, dev_id, pi_id, time):
+        """
+            Set how long to wait between signalling a shutdown and powering off the pi
+        """
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SET_OFF_DELAY, dev_id, [pi_id, time])[0]
 
     def get_pi_sig_delay(self, dev_id, pi_id):
+        """
+            Get how long to wait between recieving a signal for shutdown and powering off the pi
+        """
         validate_pi_id(pi_id)
         (success, data) = self._send_cmd(CMD_GET_SIG_OFF_DELAY, dev_id, [pi_id])
         if success:
@@ -207,10 +277,16 @@ class Comms(object):
             return (success, None)
 
     def set_pi_sig_delay(self, dev_id, pi_id, time):
+        """
+            Set how long to wait between recieving a signal for shutdown and powering off the pi
+        """
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SET_SIG_OFF_DELAY, dev_id, [pi_id, time])[0]
 
     def get_error_buffer(self, dev_id=DEFAULT_ID):
+        """
+            Get the complete error buffer from the Pi Stack
+        """
         (success, data) = self._send_cmd(CMD_GET_ERROR_BUFFER, dev_id)
         if success:
             return (success, data)
@@ -218,9 +294,15 @@ class Comms(object):
             return (success, None)
 
     def clear_error_buffer(self, dev_id=DEFAULT_ID):
+        """
+            Reset the error buffer
+        """
         return self._send_cmd(CMD_CLEAR_ERROR_BUFFER, dev_id)[0]
 
     def get_error_count(self, dev_id=DEFAULT_ID):
+        """
+            Get the number of errors recorded since last reset
+        """
         (success, data) = self._send_cmd(CMD_GET_ERROR_COUNT, dev_id)
         if success:
             count = (data[0] << 8) | data[1]
@@ -229,9 +311,16 @@ class Comms(object):
             return (success, None)
 
     def reset_error_count(self, dev_id=DEFAULT_ID):
+        """
+            Reset both the error count and boot count
+        """
         return self._send_cmd(CMD_CLEAR_ERROR_COUNT, dev_id)[0]
 
     def get_error_pointer(self, dev_id=DEFAULT_ID):
+        """
+            Get the current error pointer - can be used to identify the most recent
+            error when the buffer is full
+        """
         (success, data) = self._send_cmd(CMD_GET_ERROR_POINTER, dev_id)
         if success:
             return (success, data[0])
@@ -239,14 +328,23 @@ class Comms(object):
             return (success, None)
 
     def send_sig(self, dev_id, pi_id):
+        """
+            Send a shutdown signal to the pi
+        """
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SEND_SIG, dev_id, [pi_id])[0]
 
     def set_pi_on_startup(self, dev_id, pi_id, status=True):
+        """
+            Set whether or not to turn a pi on on boot
+        """
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SET_PI_ON_STARTUP, dev_id, [pi_id, int(status)])[0]
 
     def get_pi_on_startup(self, dev_id, pi_id):
+        """
+            Get whether or not the pi will be powered on boot
+        """
         validate_pi_id(pi_id)
         (success, value) = self._send_cmd(CMD_GET_PI_ON_STARTUP, dev_id, [pi_id])
         print(value)
@@ -256,10 +354,16 @@ class Comms(object):
             return (success, None)
 
     def set_pi_sig_width(self, dev_id, pi_id, width):
+        """
+            Set the width of the signal to be used to send to the pi
+        """
         validate_pi_id(pi_id)
         return self._send_cmd(CMD_SET_SIG_WIDTH, dev_id, [pi_id, width])[0]
 
     def get_pi_sig_width(self, dev_id, pi_id):
+        """
+            Get the width of the signal to be used to send to the pi
+        """
         validate_pi_id(pi_id)
         (success, value) = self._send_cmd(CMD_GET_SIG_WIDTH, dev_id, [pi_id])
         if success:
@@ -268,6 +372,9 @@ class Comms(object):
             return (success, None)
 
     def get_power(self, dev_id=0):
+        """
+            Get the power being used by the board
+        """
         (success, values) = self._send_cmd(CMD_GET_POWER, dev_id)
         if success:
             return (success, ((values[0] << 24) | values[1] << 16 | values[2] << 8) | values[3])
@@ -275,6 +382,11 @@ class Comms(object):
             return (success, None)
 
     def get_5v_power(self, dev_id=0):
+        """
+            Get the power being used on the 5v bus.
+            NB. this cannot be measured directly, and it is calculated by adding the draw of the 2
+            2 together
+        """
         (success, values) = self._send_cmd(CMD_GET_5V_POWER, dev_id)
         if success:
             return (success, ((values[0] << 24) | values[1] << 16 | values[2] << 8) | values[3])
@@ -282,6 +394,9 @@ class Comms(object):
             return (success, None)
 
     def get_pi_power(self, dev_id, pi_id):
+        """
+            Get the power being used by the specified pi
+        """
         validate_pi_id(pi_id)
         (success, values) = self._send_cmd(CMD_GET_PI_POWER, dev_id, [pi_id])
         if success:
@@ -303,11 +418,14 @@ class Comms(object):
                 self.get_hw_version(i)
                 count += 1
                 ids.append(i)
-            except:
+            except NoResponseError:
                 pass
         return (count, ids)
 
     def get_boot_count(self, dev_id):
+        """
+            Get the current boot count
+        """
         (success, values) = self._send_cmd(CMD_GET_BOOT_COUNT, dev_id)
         if success:
             return (success, (values[0] << 8 | values[1]))
@@ -315,6 +433,9 @@ class Comms(object):
             return (success, None)
 
 def validate_pi_id(pi_id):
+    """
+        Check that the pi id given is valid
+    """
     if pi_id < 0 or pi_id > 1:
         raise InvalidPiError()
     return True
